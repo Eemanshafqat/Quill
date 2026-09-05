@@ -1,0 +1,18 @@
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="/dashboard">QUILL</a>
+    <div class="topbar-actions">
+      <a href="/dashboard/account"><%= currentUser.email %></a>
+      <form method="POST" action="/logout" class="inline-form">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+        <button type="submit" class="link-button">Logout</button>
+      </form>
+    </div>
+  </div>
+</header>
+<nav class="mainnav">
+  <a href="/dashboard" class="<%= path === '/dashboard' ? 'active' : '' %>">Dashboard</a>
+  <a href="/dashboard/posts" class="<%= path.startsWith('/dashboard/posts') ? 'active' : '' %>">Posts</a>
+  <a href="/dashboard/analytics" class="<%= path.startsWith('/dashboard/analytics') ? 'active' : '' %>">Analytics</a>
+  <a href="/dashboard/account" class="<%= path.startsWith('/dashboard/account') ? 'active' : '' %>">Account</a>
+</nav>

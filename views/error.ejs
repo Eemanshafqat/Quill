@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('partials/head', { title: title || 'Error' }) %></head>
+<body>
+  <main class="error-page">
+    <h1><%= title || 'Something went wrong' %></h1>
+    <p><%= message %></p>
+    <a href="/dashboard" class="btn btn-secondary">Back to dashboard</a>
+  </main>
+</body>
+</html>

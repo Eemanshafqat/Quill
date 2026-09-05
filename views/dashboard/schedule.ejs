@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Schedule Post' }) %></head>
+<body>
+  <%- include('../partials/dashboard-nav') %>
+  <main class="page page-narrow">
+    <h1>Schedule Post</h1>
+    <p>Scheduling: <strong><%= post.title %></strong></p>
+    <% if (error) { %><p class="field-error"><%= error %></p><% } %>
+
+    <form method="POST" action="/dashboard/posts/<%= post.id %>/schedule" novalidate>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+      <label for="date">Publish date</label>
+      <input id="date" name="date" type="date" required value="<%= values.date %>" />
+
+      <label for="time">Publish time</label>
+      <input id="time" name="time" type="time" required value="<%= values.time %>" />
+
+      <div class="button-row">
+        <a href="/dashboard/posts/<%= post.id %>/edit" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Schedule Post</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

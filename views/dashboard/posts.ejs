@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Posts' }) %></head>
+<body>
+  <%- include('../partials/dashboard-nav') %>
+  <main class="page">
+    <%- include('../partials/flash') %>
+    <div class="page-header">
+      <h1>Posts</h1>
+      <a href="/dashboard/posts/new" class="btn btn-primary">+ New Post</a>
+    </div>
+
+    <nav class="filter-bar" aria-label="Filter posts by status">
+      <a href="/dashboard/posts" class="<%= activeFilter === 'all' ? 'active' : '' %>">All</a>
+      <a href="/dashboard/posts?status=draft" class="<%= activeFilter === 'draft' ? 'active' : '' %>">Drafts</a>
+      <a href="/dashboard/posts?status=published" class="<%= activeFilter === 'published' ? 'active' : '' %>">Published</a>
+      <a href="/dashboard/posts?status=scheduled" class="<%= activeFilter === 'scheduled' ? 'active' : '' %>">Scheduled</a>
+    </nav>
+
+    <% if (posts.length === 0) { %>
+      <p class="empty-state">No posts here yet.</p>
+    <% } else { %>
+      <table class="post-table">
+        <thead>
+          <tr><th>Title</th><th>Status</th><th>Updated</th><th>Published</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          <% posts.forEach(function(post) { %>
+            <tr>
+              <td><%= post.title %></td>
+              <td><span class="badge badge-<%= post.status %>"><%= post.status %></span></td>
+              <td><%= new Date(post.updatedAt).toLocaleDateString() %></td>
+              <td><%= post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : '—' %></td>
+              <td><a href="/dashboard/posts/<%= post.id %>/edit">Edit</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </main>
+</body>
+</html>

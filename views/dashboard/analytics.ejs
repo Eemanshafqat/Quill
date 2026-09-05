@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Analytics' }) %></head>
+<body>
+  <%- include('../partials/dashboard-nav') %>
+  <main class="page">
+    <%- include('../partials/flash') %>
+    <h1>Analytics</h1>
+
+    <form method="GET" action="/dashboard/analytics" class="inline-form range-form">
+      <label for="range">Date Range</label>
+      <select id="range" name="range" onchange="this.form.submit()">
+        <option value="7d" <%= range === '7d' ? 'selected' : '' %>>Last 7 days</option>
+        <option value="30d" <%= range === '30d' ? 'selected' : '' %>>Last 30 days</option>
+        <option value="90d" <%= range === '90d' ? 'selected' : '' %>>Last 90 days</option>
+      </select>
+      <noscript><button type="submit" class="btn btn-secondary">Apply</button></noscript>
+    </form>
+
+    <h2>Total Views</h2>
+    <p class="big-number"><%= summary.totalViews.toLocaleString() %></p>
+
+    <h2>Views Over Time</h2>
+    <% const maxViews = Math.max(1, ...summary.viewsOverTime.map(p => p.views)); %>
+    <% if (summary.viewsOverTime.every(p => p.views === 0)) { %>
+      <p class="empty-state">No view data yet.</p>
+    <% } else { %>
+      <div class="bar-chart">
+        <% summary.viewsOverTime.forEach(function(point) { %>
+          <div class="bar-row">
+            <span class="bar-label"><%= point.date %></span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: <%= Math.round((point.views / maxViews) * 100) %>%"></div>
+            </div>
+            <span class="bar-value"><%= point.views %></span>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <h2>Top Posts</h2>
+    <% if (summary.topPosts.length === 0) { %>
+      <p class="empty-state">No post views yet.</p>
+    <% } else { %>
+      <ol class="ranked-list">
+        <% summary.topPosts.forEach(function(p) { %>
+          <li><%= p.title %> — <%= p.views.toLocaleString() %> views</li>
+        <% }) %>
+      </ol>
+    <% } %>
+
+    <h2>Top Referrers</h2>
+    <% if (summary.referrers.length === 0) { %>
+      <p class="empty-state">No referrer data yet.</p>
+    <% } else { %>
+      <table class="post-table">
+        <thead><tr><th>Source</th><th>Visits</th></tr></thead>
+        <tbody>
+          <% summary.referrers.forEach(function(r) { %>
+            <tr><td><%= r.source %></td><td><%= r.count %></td></tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </main>
+</body>
+</html>

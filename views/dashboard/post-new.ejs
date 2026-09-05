@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'New Post' }) %></head>
+<body>
+  <%- include('../partials/dashboard-nav') %>
+  <main class="page">
+    <%- include('../partials/flash') %>
+    <h1>New Post</h1>
+    <% if (errors.general) { %><p class="field-error"><%= errors.general %></p><% } %>
+
+    <form method="POST" action="/dashboard/posts" novalidate>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+      <label for="title">Title</label>
+      <input id="title" name="title" type="text" required maxlength="200" value="<%= values.title %>" />
+      <% if (errors.title) { %><p class="field-error"><%= errors.title %></p><% } %>
+
+      <label for="tags">Tags (comma separated)</label>
+      <input id="tags" name="tags" type="text" placeholder="ai, mcp, programming" value="<%= values.tags %>" />
+
+      <label for="content">Content (Markdown)</label>
+      <textarea id="content" name="content" rows="16" required><%= values.content %></textarea>
+      <% if (errors.content) { %><p class="field-error"><%= errors.content %></p><% } %>
+
+      <button type="submit" class="btn btn-primary">Save Draft</button>
+    </form>
+  </main>
+</body>
+</html>

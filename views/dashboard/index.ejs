@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Dashboard' }) %></head>
+<body>
+  <%- include('../partials/dashboard-nav') %>
+  <main class="page">
+    <%- include('../partials/flash') %>
+    <h1>Dashboard</h1>
+    <p>Welcome back, <%= currentUser.email %>!</p>
+
+    <div class="stat-row">
+      <div class="stat-card"><span class="stat-number"><%= counts.drafts %></span><span class="stat-label">Drafts</span></div>
+      <div class="stat-card"><span class="stat-number"><%= counts.published %></span><span class="stat-label">Published</span></div>
+      <div class="stat-card"><span class="stat-number"><%= counts.scheduled %></span><span class="stat-label">Scheduled</span></div>
+    </div>
+
+    <h2>Recent Posts</h2>
+    <% if (recentPosts.length === 0) { %>
+      <p class="empty-state">You haven't written any posts yet.</p>
+    <% } else { %>
+      <table class="post-table">
+        <thead><tr><th>Title</th><th>Status</th><th>Updated</th><th></th></tr></thead>
+        <tbody>
+          <% recentPosts.forEach(function(post) { %>
+            <tr>
+              <td><%= post.title %></td>
+              <td><span class="badge badge-<%= post.status %>"><%= post.status %></span></td>
+              <td><%= new Date(post.updatedAt).toLocaleDateString() %></td>
+              <td><a href="/dashboard/posts/<%= post.id %>/edit">Edit</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+
+    <a href="/dashboard/posts/new" class="btn btn-primary">+ New Post</a>
+  </main>
+</body>
+</html>

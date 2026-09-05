@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Account' }) %></head>
+<body>
+  <%- include('../partials/dashboard-nav') %>
+  <main class="page page-narrow">
+    <%- include('../partials/flash') %>
+    <h1>Account</h1>
+
+    <section class="panel">
+      <h2>Email</h2>
+      <p><%= user.email %></p>
+    </section>
+
+    <section class="panel">
+      <h2>MCP Access</h2>
+      <p>Your MCP server connection is managed using an API key.</p>
+
+      <% if (newPlaintextKey) { %>
+        <div class="callout callout-warning">
+          <p><strong>Your new API key will only be shown once. Store it somewhere secure.</strong></p>
+          <code class="api-key-reveal"><%= newPlaintextKey %></code>
+        </div>
+      <% } %>
+
+      <label>API Key</label>
+      <p><code><%= maskedKey || 'No active API key' %></code></p>
+
+      <div class="button-row">
+        <a href="/dashboard/account/api-key/rotate" class="btn btn-secondary">Rotate API Key</a>
+        <a href="/dashboard/account/api-key/revoke" class="btn btn-danger">Revoke API Key</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

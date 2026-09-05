@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Edit Post' }) %></head>
+<body>
+  <%- include('../partials/dashboard-nav') %>
+  <main class="page">
+    <%- include('../partials/flash') %>
+    <h1>Edit Post</h1>
+
+    <section class="panel">
+      <% if (errors.general) { %><p class="field-error"><%= errors.general %></p><% } %>
+      <form method="POST" action="/dashboard/posts/<%= post.id %>" novalidate>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+        <label for="title">Title</label>
+        <input id="title" name="title" type="text" required maxlength="200" value="<%= values.title %>" />
+        <% if (errors.title) { %><p class="field-error"><%= errors.title %></p><% } %>
+
+        <label for="tags">Tags (comma separated)</label>
+        <input id="tags" name="tags" type="text" value="<%= values.tags %>" />
+
+        <label for="content">Content (Markdown)</label>
+        <textarea id="content" name="content" rows="16" required><%= values.content %></textarea>
+        <% if (errors.content) { %><p class="field-error"><%= errors.content %></p><% } %>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>SEO</h2>
+      <% if (seoErrors.general) { %><p class="field-error"><%= seoErrors.general %></p><% } %>
+      <form method="POST" action="/dashboard/posts/<%= post.id %>/seo" novalidate>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+        <label for="metaTitle">Meta Title</label>
+        <input id="metaTitle" name="metaTitle" type="text" maxlength="70" value="<%= seoValues.metaTitle %>" />
+        <% if (seoErrors.metaTitle) { %><p class="field-error"><%= seoErrors.metaTitle %></p><% } %>
+
+        <label for="metaDescription">Meta Description</label>
+        <textarea id="metaDescription" name="metaDescription" rows="3" maxlength="160"><%= seoValues.metaDescription %></textarea>
+        <% if (seoErrors.metaDescription) { %><p class="field-error"><%= seoErrors.metaDescription %></p><% } %>
+
+        <label for="slug">Slug</label>
+        <input id="slug" name="slug" type="text" pattern="[a-z0-9-]+" placeholder="my-post-title" value="<%= seoValues.slug %>" />
+        <p class="hint">Lowercase letters, numbers, and hyphens only.</p>
+        <% if (seoErrors.slug) { %><p class="field-error"><%= seoErrors.slug %></p><% } %>
+
+        <button type="submit" class="btn btn-secondary">Save SEO Settings</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Publishing</h2>
+      <p>Status: <span class="badge badge-<%= post.status %>"><%= post.status %></span>
+        <% if (post.status === 'scheduled' && post.publishAt) { %>
+          — scheduled for <%= new Date(post.publishAt).toLocaleString() %>
+        <% } %>
+      </p>
+      <div class="button-row">
+        <% if (post.status !== 'published') { %>
+          <a href="/dashboard/posts/<%= post.id %>/publish" class="btn btn-primary">Publish Now</a>
+          <a href="/dashboard/posts/<%= post.id %>/schedule" class="btn btn-secondary">Schedule</a>
+        <% } else { %>
+          <a href="/dashboard/posts/<%= post.id %>/unpublish" class="btn btn-secondary">Unpublish</a>
+        <% } %>
+        <a href="/dashboard/posts/<%= post.id %>/delete" class="btn btn-danger">Delete</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

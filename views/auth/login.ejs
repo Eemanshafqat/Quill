@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: 'Log in' }) %></head>
+<body class="auth-page">
+  <main class="auth-card">
+    <h1 class="brand">Quill</h1>
+    <h2>Welcome back</h2>
+    <%- include('../partials/flash') %>
+    <% if (error) { %><p class="field-error"><%= error %></p><% } %>
+
+    <form method="POST" action="/login" novalidate>
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required value="<%= values.email %>" />
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required />
+
+      <button type="submit" class="btn btn-primary btn-block">Log in</button>
+    </form>
+
+    <p class="auth-alt">Don't have an account? <a href="/signup">Sign up</a></p>
+  </main>
+</body>
+</html>

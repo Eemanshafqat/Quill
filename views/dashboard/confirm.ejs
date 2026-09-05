@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head', { title: heading }) %></head>
+<body>
+  <%- include('../partials/dashboard-nav') %>
+  <main class="page page-narrow">
+    <h1><%= heading %></h1>
+    <p><%= body %></p>
+    <form method="POST" action="<%= action %>" class="button-row">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <a href="<%= backHref %>" class="btn btn-secondary">Cancel</a>
+      <button type="submit" class="btn <%= dangerous ? 'btn-danger' : 'btn-primary' %>"><%= confirmLabel %></button>
+    </form>
+  </main>
+</body>
+</html>
