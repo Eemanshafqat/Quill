@@ -50,6 +50,34 @@ app.get('/mcp/:apiKey/sse', async (req, res) => {
     };
   });
 
+  // 3. Register Tool Execution Handlers (with publish safety check)
+  server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    const { name, arguments: args } = request.params;
+    const typedArgs = args as Record<string, any>;
+
+    // PRD Safety Rule: Explicit confirmation before publishing live
+    if (name === 'publish_post') {
+      if (typedArgs.confirm_publish !== true) {
+        return {
+          content: [{ 
+            type: "text", 
+            text: `SAFETY WARNING: You are about to publish post ID ${typedArgs.id} to the live public web. To proceed, call this tool again with 'confirm_publish: true'.` 
+          }]
+        };
+      }
+    }
+
+    // Generic handler response for all other tool calls (to be connected with Person 1's logic later)
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Tool '${name}' executed successfully for user ${user.id}!`
+        }
+      ]
+    };
+  });
+
   const transport = new SSEServerTransport('/mcp/messages', res);
   await server.connect(transport);
 });
