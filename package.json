@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",
     "express": "^5.2.1"
@@ -6,6 +7,33 @@
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^26.4.1",
+=======
+  "name": "quill",
+  "version": "1.0.0",
+  "description": "MCP-Native Blogging Platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eemanshafqat/Quill.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Eemanshafqat/Quill/issues"
+  },
+  "homepage": "https://github.com/Eemanshafqat/Quill#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "tsx": "^4.23.13",
+>>>>>>> origin/main
     "typescript": "^7.0.2"
   }
 }

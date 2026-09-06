@@ -3,28 +3,24 @@ import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 
+// Import Eeman's real authentication function
+import { authenticateApiKey } from './auth/apiKey.js'; 
+
 const app = express();
 app.use(express.json());
-
-// Temporary mock function for Person 1's DB check (until Person 1 pushes their code)
-async function mockGetUserByApiKey(apiKey: string) {
-  if (apiKey === 'test-key-123') {
-    return { id: 'user-uuid-1', email: 'mehak@example.com' };
-  }
-  return null;
-}
 
 // 1. SSE Connection Endpoint with API Key in URL
 app.get('/mcp/:apiKey/sse', async (req, res) => {
   const { apiKey } = req.params;
 
-  // Validate API key using Person 1's backend logic layer
-  const user = await mockGetUserByApiKey(apiKey);
+  // Validate API key using Person 1's real backend logic layer
+  const user = authenticateApiKey(apiKey);
+  
   if (!user) {
     return res.status(401).json({ error: 'Unauthorized: Invalid API Key' });
   }
 
-  console.log(`User authenticated: ${user.email}`);
+  console.log(`User authenticated: ${user.userId}`);
 
   // Initialize MCP Server instance for this session
   const server = new Server(
@@ -59,20 +55,20 @@ app.get('/mcp/:apiKey/sse', async (req, res) => {
     if (name === 'publish_post') {
       if (typedArgs.confirm_publish !== true) {
         return {
-          content: [{ 
-            type: "text", 
-            text: `SAFETY WARNING: You are about to publish post ID ${typedArgs.id} to the live public web. To proceed, call this tool again with 'confirm_publish: true'.` 
+          content: [{
+            type: "text",
+            text: `SAFETY WARNING: You are about to publish post ID ${typedArgs.id} to the live public web. To proceed, call this tool again with 'confirm_publish: true'.`
           }]
         };
       }
     }
 
-    // Generic handler response for all other tool calls (to be connected with Person 1's logic later)
+    // Generic handler response (now using the real user.userId)
     return {
       content: [
         {
           type: "text",
-          text: `Tool '${name}' executed successfully for user ${user.id}!`
+          text: `Tool '${name}' executed successfully for user ${user.userId}!`
         }
       ]
     };
