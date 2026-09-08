@@ -1,4 +1,13 @@
 {
+<<<<<<< HEAD
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.4.1",
+=======
   "name": "quill",
   "version": "1.0.0",
   "description": "MCP-Native Blogging Platform",
@@ -24,6 +33,7 @@
   "devDependencies": {
     "@types/node": "^26.4.1",
     "tsx": "^4.23.13",
+>>>>>>> origin/main
     "typescript": "^7.0.2"
   }
 }
